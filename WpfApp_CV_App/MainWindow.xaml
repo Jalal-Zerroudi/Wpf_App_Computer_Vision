@@ -1,0 +1,188 @@
+﻿<Controls:MetroWindow
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                mc:Ignorable="av" x:Class="WpfApp_CV_App.MainWindow"
+                Title="Image Processing Studio" Height="800" Width="1400"
+                WindowStartupLocation="CenterScreen">
+
+    <!-- Fusionnez les dictionnaires de ressources MahApps.Metro avec les URI corrects -->
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+
+    <!-- Disposition générale de l'interface -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="12" Padding="10">
+            <Border.Effect>
+                <DropShadowEffect Color="#AAA" BlurRadius="8" ShadowDepth="2"/>
+            </Border.Effect>
+            <!-- Barre latérale (Sidebar) -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="8">
+                <StackPanel>
+                    <!-- En-tête de la Sidebar -->
+                    <TextBlock Text="Image Processing" FontSize="24" FontWeight="Bold" Margin="8"/>
+                    <TextBlock Text="Studio Pro" FontSize="18" Margin="8"/>
+
+                    <!-- Menu Fichier -->
+                    <Expander Header="Fichier" Margin="8">
+                        <StackPanel>
+                            <Button Content="Ouvrir" Margin="4" Click="MenuItem_Ouvrir_Click" />
+                            <Button Content="Enregistrer" Margin="4" Click="MenuItem_Enregistrer_Click" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Opération ponctuelle -->
+                    <Expander Header="Opération ponctuelle" Margin="8">
+                        <StackPanel>
+                            <Button Content="Contraste" Margin="4" Click="MenuItem_Contraste_Click" />
+                            <Button Content="Histogramme" Margin="4" Click="MenuItem_Histogramme_Click" />
+                            <Button Content="Décalage additif" Margin="4" Click="MenuItem_DecalageAdditif_Click" />
+                            <Button Content="Mise à l'échelle multiplicative" Margin="4" Click="MenuItem_MiseAEchelleMultiplicative_Click" />
+                            <Button Content="Inversion (négatif)" Margin="4" Click="MenuItem_Inversion_Click" />
+                            <Button Content="Seuillage" Margin="4" Click="MenuItem_Seuillage_Click" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Bruit -->
+                    <Expander Header="Bruit" Margin="8">
+                        <StackPanel>
+                            <Button Content="Gaussien" Margin="4" Click="MenuItem_GaussienBruit_Click" />
+                            <Button Content="Poivre et sel" Margin="4" Click="MenuItem_PoivreEtSel_Click" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Filtres passe bas -->
+                    <Expander Header="Filtres passe bas" Margin="8">
+                        <StackPanel>
+                            <!-- Filtres linéaires -->
+                            <Expander Header="Filtres linéaires" Margin="4">
+                                <StackPanel>
+                                    <!-- Filtre Moyenneur -->
+                                    <Expander Header="Filtre Moyenneur" Margin="4">
+                                        <StackPanel>
+                                            <Button Content="Moyenneur (3,3)" Margin="4" Click="MenuItem_Moyenneur33_Click" />
+                                            <Button Content="Moyenneur (5,5)" Margin="4" Click="MenuItem_Moyenneur55_Click" />
+                                        </StackPanel>
+                                    </Expander>
+                                    <!-- Filtre Gaussien -->
+                                    <Expander Header="Filtre Gaussien" Margin="4">
+                                        <StackPanel>
+                                            <Button Content="Gaussien (3,3)" Margin="4" Click="MenuItem_Gaussien33_Click" />
+                                            <Button Content="Gaussien (5,5)" Margin="4" Click="MenuItem_Gaussien55_Click" />
+                                        </StackPanel>
+                                    </Expander>
+                                    <Button Content="Pyramidal" Margin="4" Click="MenuItem_Pyramidal_Click" />
+                                    <Button Content="Conique" Margin="4" Click="MenuItem_Conique_Click" />
+                                </StackPanel>
+                            </Expander>
+                            <!-- Filtres non linéaires -->
+                            <Expander Header="Filtres non linéaires" Margin="4">
+                                <StackPanel>
+                                    <Button Content="Median" Margin="4" Click="MenuItem_Median_Click" />
+                                    <Button Content="Nagao" Margin="4" Click="MenuItem_Nagao_Click" />
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Filtres passe haut -->
+                    <Expander Header="Filtres passe haut" Margin="8">
+                        <StackPanel>
+                            <Button Content="Gradient" Margin="4" Click="MenuItem_Gradient_Click" />
+                            <Button Content="Sobel" Margin="4" Click="MenuItem_Sobel_Click" />
+                            <Button Content="Prewitt" Margin="4" Click="MenuItem_Prewitt_Click" />
+                            <Button Content="Roberts" Margin="4" Click="MenuItem_Roberts_Click" />
+                            <Button Content="Laplacien" Margin="4" Click="MenuItem_Laplacien_Click" />
+                            <Button Content="Canny" Margin="4" Click="MenuItem_Canny_Click" />
+                            <Button Content="Kirsch" Margin="4" Click="MenuItem_Kirsch_Click" />
+                            <Button Content="Marr-Hildreth" Margin="4" Click="MenuItem_MarrHildreth_Click" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Filtrage fréquentiel -->
+                    <Expander Header="Filtrage fréquentiel" Margin="8">
+                        <StackPanel>
+                            <Button Content="Filtre passe-bas" Margin="4" Click="MenuItem_FiltrePasseBas_Click" />
+                            <Button Content="Filtre passe bas de Butterworth" Margin="4" Click="MenuItem_ButterworthBas_Click" />
+                            <Button Content="Filtre passe haut" Margin="4" Click="MenuItem_FiltrePasseHaut_Click" />
+                            <Button Content="Filtre passe haut de Butterworth" Margin="4" Click="MenuItem_ButterworthHaut_Click" />
+                            <Button Content="Homomorphique" Margin="4" Click="MenuItem_Homomorphique_Click" />
+                            <Button Content="Filtre Passe-Bande" Margin="4" Click="MenuItem_FiltrePasseBande_Click" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Menu Morphologie -->
+                    <Expander Header="Morphologie" Margin="8">
+                        <StackPanel>
+                            <Button Content="Erosion" Margin="4" Click="MenuItem_Erosion_Click" />
+                            <Button Content="Dilatation" Margin="4" Click="MenuItem_Dilatation_Click" />
+                            <Button Content="Ouverture" Margin="4" Click="MenuItem_Ouverture_Click" />
+                            <Button Content="Fermeture" Margin="4" Click="MenuItem_Fermeture_Click" />
+                            <Button Content="Gradient interne" Margin="4" Click="MenuItem_GradientInterne_Click" />
+                            <Button Content="Gradient externe" Margin="4" Click="MenuItem_GradientExterne_Click" />
+                            <Button Content="Gradient morphologique" Margin="4" Click="MenuItem_GradientMorphologique_Click" />
+                            <Button Content="Chapeau haut de forme blanc" Margin="4" Click="MenuItem_ChapeauBlanc_Click" />
+                            <Button Content="Chapeau haut de forme noir" Margin="4" Click="MenuItem_ChapeauNoir_Click" />
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+        </Border>
+
+        <!-- ZONE PRINCIPALE -->
+        <Border Grid.Column="1" Background="White" Margin="16" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect Color="#AAA" BlurRadius="10" ShadowDepth="3"/>
+            </Border.Effect>
+            <DockPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- CARTES IMAGE -->
+                    <Grid Grid.Row="0" Margin="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="16" BorderBrush="#DDD" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Image Originale" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <Image x:Name="ImageOriginal" Stretch="Uniform"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="16" BorderBrush="#DDD" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Image Traitée" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <Image x:Name="ImageProcessed" Stretch="Uniform"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- BARRE D'OUTILS -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                        <Button Content="Réinitialiser" Margin="8" Style="{StaticResource ModernButton}" Click="ResetImageButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Controls:MetroWindow>
