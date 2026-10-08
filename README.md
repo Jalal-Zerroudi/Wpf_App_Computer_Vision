@@ -10,11 +10,19 @@ The application displays the original image and the processed result side by sid
 - exporting processed images as PNG, JPEG, or BMP;
 - point operations: contrast, additive shift, multiplicative scaling, negative, and thresholding;
 - Gaussian and salt-and-pepper noise generation;
-- low-pass filters: mean, Gaussian, pyramidal, conical, median, and Nagao;
-- edge and high-pass filters: gradient, Sobel, Prewitt, Roberts, Laplacian, Canny, Kirsch, and Marr–Hildreth;
-- frequency-domain filters, including Butterworth and homomorphic filtering;
+- low-pass filters: mean, Gaussian, pyramidal, conical, and median;
+- edge and high-pass filters: Sobel, Prewitt, Roberts, Laplacian, Canny, Kirsch, and Marr–Hildreth;
+- an ideal low-pass filter in the frequency domain;
 - morphology operations: erosion, dilation, opening, closing, internal/external gradients, morphological gradient, and white/black top-hat transforms;
 - resetting the processed-image view to start a new operation.
+
+## Current limitations
+
+The following menu entries are present but are not fully implemented yet:
+
+- the generic gradient handler displays a notice and returns an unchanged copy of the source image;
+- the Nagao handler currently delegates to the median filter;
+- Butterworth low-pass/high-pass, frequency-domain high-pass, band-pass, and homomorphic filtering currently display placeholder notices.
 
 ## Technology
 
