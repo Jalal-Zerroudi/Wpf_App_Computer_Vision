@@ -12,7 +12,6 @@
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="5.0.1" />
     <PackageReference Include="DialogBoxForMaterialDesignToolkitInXaml" Version="1.0.0" />
-    <PackageReference Include="Emgu.CV" Version="4.10.0.5680" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="5.1.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.1.0" />

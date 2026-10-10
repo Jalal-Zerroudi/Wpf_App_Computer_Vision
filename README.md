@@ -23,7 +23,6 @@ The application displays the original image and the processed result side by sid
 - WPF
 - MahApps.Metro
 - Material Design in XAML
-- Emgu CV
 
 ## Requirements
 
