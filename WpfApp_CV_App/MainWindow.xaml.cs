@@ -609,8 +609,14 @@ namespace WpfApp_CV_App
                     resultPixels[idx + 3] = pixels[idx + 3];
                 }
             }
-            // Recopie de la dernière ligne/colonne
-            Array.Copy(pixels, resultPixels, pixels.Length);
+            // Recopie uniquement les pixels de bord qui ne sont pas traités ci-dessus.
+            int lastRowOffset = (height - 1) * stride;
+            Array.Copy(pixels, lastRowOffset, resultPixels, lastRowOffset, stride);
+            for (int y = 0; y < height - 1; y++)
+            {
+                int lastColumnOffset = (y * stride) + ((width - 1) * 4);
+                Array.Copy(pixels, lastColumnOffset, resultPixels, lastColumnOffset, 4);
+            }
             ImageProcessed.Source = CreateBitmapFromPixels(resultPixels, width, height, wb.DpiX, wb.DpiY);
         }
 
