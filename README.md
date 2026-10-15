@@ -52,6 +52,14 @@ Alternatively, open `WpfApp_CV_App.sln` in Visual Studio, restore the NuGet pack
 4. Compare the original and processed images.
 5. Select **Fichier → Enregistrer** to export the result.
 
+## Processing behavior
+
+- Each operation starts from the currently loaded **original image** and replaces the processed preview. Selecting several filters in sequence does not build a cumulative pipeline.
+- Compound morphology operations may combine intermediate erosion or dilation results internally, but they still use the original image as their input.
+- **Reset** clears only the processed preview; the original image remains loaded.
+- **Save** exports only the processed preview. If no operation has produced a result, the application displays an error instead of saving the original image.
+- Opening another image clears the previous processed result.
+
 ## Project structure
 
 - `WpfApp_CV_App.sln` — Visual Studio solution.
