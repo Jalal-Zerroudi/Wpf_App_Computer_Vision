@@ -45,10 +45,10 @@ WPF targets Windows, so the application is not intended to run natively on Linux
 
 ## Build and run
 
-Clone the repository and enter its directory:
+The instructions below target `main`. The repository's default branch is currently `master`, so select `main` explicitly when cloning:
 
 ```powershell
-git clone https://github.com/Jalal-Zerroudi/Wpf_App_Computer_Vision.git
+git clone --branch main https://github.com/Jalal-Zerroudi/Wpf_App_Computer_Vision.git
 cd Wpf_App_Computer_Vision
 ```
 
@@ -71,6 +71,17 @@ Alternatively, open `WpfApp_CV_App.sln` in Visual Studio, restore the NuGet pack
 5. Compare the original image with the processed result.
 6. Use **Réinitialiser** to discard the current processed result when needed.
 7. Select **Fichier → Enregistrer** to export the result.
+
+### Source image, reset, and export
+
+Most processing handlers read `ImageOriginal.Source` rather than the previous processed result, so selecting two filters does not generally apply them as a cumulative pipeline.
+
+- **Réinitialiser** only clears `ImageProcessed.Source`. It does not reload the file or undo changes to the source view.
+- **Opening** replaces the source view with the erosion intermediate result; **closing** replaces it with the dilation intermediate result. The white/black top-hat handlers call these operations and inherit that source-view change.
+- To compare independent operations against the same original pixels, reopen the input file before each experiment.
+- Export requires a processed result. It writes to the selected destination using create/overwrite mode; choose a new filename to preserve the input image.
+
+These observations describe the current `main` implementation, not an undo/history feature.
 
 ## Project structure
 
