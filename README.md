@@ -10,9 +10,9 @@ The application displays the original image and the processed result side by sid
 - export of processed images as PNG, JPEG, or BMP;
 - point operations: contrast, additive shift, multiplicative scaling, negative, and thresholding;
 - Gaussian and salt-and-pepper noise generation;
-- low-pass filters: mean, Gaussian, pyramidal, conical, median, and Nagao;
-- edge and high-pass filters: gradient, Sobel, Prewitt, Roberts, Laplacian, Canny, Kirsch, and Marr–Hildreth;
-- frequency-domain filters, including Butterworth and homomorphic filtering;
+- spatial low-pass filters: mean, Gaussian, pyramidal, conical, and median, with a Nagao control currently backed by the median implementation;
+- edge filters: Sobel, Prewitt, Roberts, Laplacian, Canny, Kirsch, and Marr–Hildreth, plus a placeholder gradient control;
+- an ideal frequency-domain low-pass filter, with additional frequency controls present as placeholders;
 - morphology operations: erosion, dilation, opening, closing, gradients, and top-hat transforms;
 - reset of the processed-image view.
 
@@ -55,10 +55,18 @@ Alternatively, open `WpfApp_CV_App.sln` in Visual Studio, restore the NuGet pack
 ## Processing behavior
 
 - Each operation starts from the currently loaded **original image** and replaces the processed preview. Selecting several filters in sequence does not build a cumulative pipeline.
-- Compound morphology operations may combine intermediate erosion or dilation results internally, but they still use the original image as their input.
+- Compound morphology operations combine intermediate erosion or dilation results internally. The current opening and closing handlers also replace the original-image view with that intermediate result, so later operations no longer start from the initially loaded image.
 - **Reset** clears only the processed preview; the original image remains loaded.
 - **Save** exports only the processed preview. If no operation has produced a result, the application displays an error instead of saving the original image.
 - Opening another image clears the previous processed result.
+
+## Current implementation limits
+
+- **Nagao** delegates directly to the median-filter handler; it is not a distinct Nagao implementation yet.
+- **Gradient** displays an informational message and copies the original pixels unchanged.
+- In the frequency section, only **Filtre passe-bas** currently produces an image. The Butterworth low/high-pass, high-pass, homomorphic, and band-pass controls only display “to be implemented” messages.
+- The implemented frequency low-pass uses direct two-dimensional DFT and inverse DFT loops rather than an FFT. Its cost grows as `O(W²H²)`, so use small images to avoid long UI freezes.
+- **Opening** and **closing** leave their intermediate erosion or dilation in the original-image view. Reopen the source image before applying another independent operation.
 
 ## Project structure
 
