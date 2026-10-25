@@ -1233,25 +1233,39 @@ namespace WpfApp_CV_App
 
         private void MenuItem_Ouverture_Click(object sender, RoutedEventArgs e)
         {
+            if (ImageOriginal.Source is not BitmapSource original) return;
+
             // Ouverture = érosion puis dilatation
             MenuItem_Erosion_Click(sender, e);
-            BitmapSource eroded = ImageProcessed.Source as BitmapSource;
-            if (eroded != null)
+            if (ImageProcessed.Source is not BitmapSource eroded) return;
+
+            try
             {
                 ImageOriginal.Source = eroded;
                 MenuItem_Dilatation_Click(sender, e);
+            }
+            finally
+            {
+                ImageOriginal.Source = original;
             }
         }
 
         private void MenuItem_Fermeture_Click(object sender, RoutedEventArgs e)
         {
+            if (ImageOriginal.Source is not BitmapSource original) return;
+
             // Fermeture = dilatation puis érosion
             MenuItem_Dilatation_Click(sender, e);
-            BitmapSource? dilated = ImageProcessed.Source as BitmapSource;
-            if (dilated != null)
+            if (ImageProcessed.Source is not BitmapSource dilated) return;
+
+            try
             {
                 ImageOriginal.Source = dilated;
                 MenuItem_Erosion_Click(sender, e);
+            }
+            finally
+            {
+                ImageOriginal.Source = original;
             }
         }
 
