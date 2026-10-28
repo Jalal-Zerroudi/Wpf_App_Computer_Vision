@@ -968,65 +968,110 @@ namespace WpfApp_CV_App
                     gaussianKernel[i, j] /= kernelSum;
             WriteableBitmap blurredImage = ApplyConvolutionFilter(grayImage, gaussianKernel);
 
-            // 3. Application du filtre Laplacien
+            // 3. Conserver la réponse laplacienne signée pour détecter les changements de signe.
             double[,] laplacianKernel = {
                 { 0,  1, 0 },
                 { 1, -4, 1 },
                 { 0,  1, 0 }
             };
-            WriteableBitmap laplacianImage = ApplyConvolutionFilter(blurredImage, laplacianKernel);
+            double[] laplacianResponse = ApplySignedConvolution(blurredImage, laplacianKernel);
 
-            // 4. Détection des zéros-crossings
-            WriteableBitmap zeroCrossingImage = DetectZeroCrossings(laplacianImage);
-
-            ImageProcessed.Source = zeroCrossingImage;
+            // 4. Détection des passages par zéro suffisamment marqués.
+            ImageProcessed.Source = DetectZeroCrossings(
+                laplacianResponse,
+                blurredImage.PixelWidth,
+                blurredImage.PixelHeight,
+                blurredImage.DpiX,
+                blurredImage.DpiY);
         }
 
-        private WriteableBitmap DetectZeroCrossings(WriteableBitmap source)
+        private double[] ApplySignedConvolution(WriteableBitmap source, double[,] kernel)
         {
             int width = source.PixelWidth;
             int height = source.PixelHeight;
             int stride = width * 4;
             byte[] pixels = new byte[height * stride];
             source.CopyPixels(pixels, stride, 0);
-            byte[] resultPixels = new byte[pixels.Length];
+
+            double[] response = new double[width * height];
+            int offsetX = kernel.GetLength(1) / 2;
+            int offsetY = kernel.GetLength(0) / 2;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    double sum = 0;
+                    for (int ky = 0; ky < kernel.GetLength(0); ky++)
+                    {
+                        int py = Math.Max(0, Math.Min(height - 1, y + ky - offsetY));
+                        for (int kx = 0; kx < kernel.GetLength(1); kx++)
+                        {
+                            int px = Math.Max(0, Math.Min(width - 1, x + kx - offsetX));
+                            int index = (py * stride) + (px * 4);
+                            sum += pixels[index] * kernel[ky, kx];
+                        }
+                    }
+                    response[(y * width) + x] = sum;
+                }
+            }
+
+            return response;
+        }
+
+        private WriteableBitmap DetectZeroCrossings(
+            double[] response,
+            int width,
+            int height,
+            double dpiX,
+            double dpiY)
+        {
+            const double minimumContrast = 15.0;
+            int stride = width * 4;
+            byte[] resultPixels = new byte[height * stride];
+
+            for (int i = 3; i < resultPixels.Length; i += 4)
+            {
+                resultPixels[i] = 255;
+            }
 
             for (int y = 1; y < height - 1; y++)
             {
                 for (int x = 1; x < width - 1; x++)
                 {
-                    int idx = (y * stride) + (x * 4);
-                    double currentPixel = pixels[idx];
-
+                    double current = response[(y * width) + x];
                     bool zeroCrossing = false;
-                    for (int dy = -1; dy <= 1; dy++)
+
+                    for (int dy = -1; dy <= 1 && !zeroCrossing; dy++)
                     {
                         for (int dx = -1; dx <= 1; dx++)
                         {
                             if (dy == 0 && dx == 0) continue;
-                            int neighborIdx = ((y + dy) * stride) + ((x + dx) * 4);
-                            double neighborPixel = pixels[neighborIdx];
-                            if ((currentPixel > 0 && neighborPixel < 0) || (currentPixel < 0 && neighborPixel > 0))
+
+                            double neighbor = response[((y + dy) * width) + x + dx];
+                            bool signChanged = (current > 0 && neighbor < 0)
+                                || (current < 0 && neighbor > 0);
+
+                            if (signChanged && Math.Abs(current - neighbor) >= minimumContrast)
                             {
                                 zeroCrossing = true;
                                 break;
                             }
                         }
-                        if (zeroCrossing) break;
                     }
 
-                    byte value = zeroCrossing ? (byte)255 : (byte)0;
-                    resultPixels[idx] = value;
-                    resultPixels[idx + 1] = value;
-                    resultPixels[idx + 2] = value;
-                    resultPixels[idx + 3] = 255;
+                    if (zeroCrossing)
+                    {
+                        int index = (y * stride) + (x * 4);
+                        resultPixels[index] = 255;
+                        resultPixels[index + 1] = 255;
+                        resultPixels[index + 2] = 255;
+                    }
                 }
             }
 
-            WriteableBitmap resultImage = CreateBitmapFromPixels(resultPixels, width, height, source.DpiX, source.DpiY);
-            return resultImage;
+            return CreateBitmapFromPixels(resultPixels, width, height, dpiX, dpiY);
         }
-
 
         #endregion
 

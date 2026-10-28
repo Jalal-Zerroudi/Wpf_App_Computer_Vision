@@ -56,6 +56,7 @@ Alternatively, open `WpfApp_CV_App.sln` in Visual Studio, restore the NuGet pack
 
 - Each operation starts from the currently loaded **original image** and replaces the processed preview. Selecting several filters in sequence does not build a cumulative pipeline.
 - Compound morphology operations combine intermediate erosion or dilation results internally while preserving the loaded original image for later independent operations.
+- Marr–Hildreth keeps the Laplacian response signed until zero-crossing detection and suppresses transitions whose contrast is below 15 intensity levels.
 - **Reset** clears only the processed preview; the original image remains loaded.
 - **Save** exports only the processed preview. If no operation has produced a result, the application displays an error instead of saving the original image.
 - Opening another image clears the previous processed result.
