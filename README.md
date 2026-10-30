@@ -2,6 +2,23 @@
 
 A Windows desktop application for interactive image processing, built with C#, WPF, and .NET 8.
 
+## Branch layout
+
+This repository currently has two divergent lines of history:
+
+- `master` is the default branch and contains commits that are not present on `main`;
+- `main` also contains commits that are not present on `master`.
+
+A commit made on one branch is therefore not automatically available on the
+other. The behavior, limitations, and commands in this README describe
+`main`. Choose the intended branch explicitly before building or contributing.
+To inspect the differences locally without changing either branch:
+
+```bash
+git fetch origin
+git log --left-right --graph --oneline origin/main...origin/master
+```
+
 ## Features
 
 The application displays the original image and the processed result side by side. Its current interface supports:
