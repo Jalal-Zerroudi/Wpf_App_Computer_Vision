@@ -165,7 +165,7 @@ namespace WpfApp_CV_App
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp",
+                Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg|Bitmap Image|*.bmp",
                 Title = "Enregistrer l'image",
                 FileName = "ImageTraitée",
                 DefaultExt = ".png"
@@ -182,6 +182,7 @@ namespace WpfApp_CV_App
                         switch (extension)
                         {
                             case ".jpg":
+                            case ".jpeg":
                                 encoder = new JpegBitmapEncoder();
                                 break;
                             case ".bmp":
