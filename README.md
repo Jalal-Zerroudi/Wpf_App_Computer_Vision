@@ -119,6 +119,23 @@ Wpf_App_Computer_Vision/
 - `WpfApp_CV_App/MainWindow.xaml.cs` — image-processing logic and event handlers.
 - `WpfApp_CV_App/App.xaml` — shared application resources and styles.
 
+## Validation
+
+No automated test project is currently versioned. Before publishing a change, build the solution in Release mode:
+
+```powershell
+dotnet build WpfApp_CV_App.sln --configuration Release
+```
+
+Then perform this manual smoke test on Windows:
+
+1. Open one PNG, one JPEG (`.jpg` or `.jpeg`), and one BMP image.
+2. Apply at least one point operation, one low-pass filter, one edge filter, and one morphology operation.
+3. Confirm that **Réinitialiser** clears the processed view as documented.
+4. Export a processed result as PNG, JPEG, and BMP without overwriting the source image.
+5. Reopen each exported file and confirm that it is readable and visually matches the processed view.
+6. Exercise a documented placeholder such as Butterworth filtering and confirm that it reports its current limitation instead of failing silently.
+
 ## Troubleshooting
 
 - If package types cannot be resolved, run `dotnet restore WpfApp_CV_App.sln`.
