@@ -61,6 +61,23 @@ Alternatively, open `WpfApp_CV_App.sln` in Visual Studio, restore the NuGet pack
 - **Save** exports only the processed preview. If no operation has produced a result, the application displays an error instead of saving the original image.
 - Opening another image clears the previous processed result.
 
+## Fixed operation parameters
+
+The interface currently runs each operation immediately; it does not prompt for parameter values. The main hard-coded settings are:
+
+| Operation | Current setting |
+| --- | --- |
+| Contrast | `contrast = 50` in the standard contrast-factor formula. |
+| Additive shift | `+30` on each RGB channel. |
+| Multiplicative scaling | `×1.2` on each RGB channel. |
+| Threshold | Mean RGB intensity at `128`, producing black or white output. |
+| Gaussian noise | Mean `0` and standard deviation `20`, sampled independently per RGB channel. |
+| Salt-and-pepper noise | `5%` probability for black and `5%` for white (about `10%` of pixels modified in total). |
+| Canny | A normalized `5×5` Gaussian kernel followed by double thresholds `30` and `90`. |
+| Ideal frequency low-pass | Radius `min(width, height) / 4`. |
+| Histogram | Displays only bins `0` through `9`; it does not render a chart or modify the image. |
+
+Change these constants in `MainWindow.xaml.cs` if you need different experimental parameters, then rebuild the application.
 ## Current implementation limits
 
 - **Nagao** delegates directly to the median-filter handler; it is not a distinct Nagao implementation yet.
