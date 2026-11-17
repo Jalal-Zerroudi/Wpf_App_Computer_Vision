@@ -48,7 +48,7 @@ The following menu entries are present but are not fully implemented yet:
 - WPF
 - MahApps.Metro
 - Material Design in XAML
-- Emgu CV
+- WPF imaging APIs (`BitmapSource`, `WriteableBitmap`, and bitmap encoders)
 
 The project declares both **Any CPU** and **x86** build platforms.
 
