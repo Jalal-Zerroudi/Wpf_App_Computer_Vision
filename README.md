@@ -52,6 +52,28 @@ The following menu entries are present but are not fully implemented yet:
 
 The project declares both **Any CPU** and **x86** build platforms.
 
+### Declared NuGet dependencies
+
+The versions below are pinned in `WpfApp_CV_App/WpfApp_CV_App.csproj` and are restored by `dotnet restore`:
+
+| Package | Version |
+| --- | --- |
+| `ControlzEx` | `5.0.1` |
+| `DialogBoxForMaterialDesignToolkitInXaml` | `1.0.0` |
+| `MahApps.Metro` | `2.4.10` |
+| `MahApps.Metro.IconPacks` | `5.1.0` |
+| `MahApps.Metro.IconPacks.Material` | `5.1.0` |
+| `MahApps.Metro.Resources` | `0.6.1` |
+| `MaterialDesign.dll` | `1.0.0` |
+| `MaterialDesignColors` | `5.2.1` |
+| `MaterialDesignInXamlToolkitAddOns` | `0.0.63` |
+| `MaterialDesignThemes` | `5.2.1` |
+| `MaterialDesignThemes.MahApps` | `5.2.1` |
+| `MaterialDesignThemes.Wpf` | `1.0.1` |
+
+No OpenCV or Emgu CV package is declared on `main`. The current processing algorithms use WPF imaging types and project-owned C# code. Treat the project file as the source of truth if these versions change.
+
+
 ## Requirements
 
 - Windows 10 or later
